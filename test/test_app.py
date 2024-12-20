@@ -1,7 +1,12 @@
+import sys
+import os
 import pytest
 from flask import Flask
 from app.app import app  # Certifique-se de que o nome do arquivo Python é app.py ou ajuste o import
 from pytest_mock import mocker
+
+# Adiciona o diretório raiz ao sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
 
 # Teste da rota principal
 @pytest.fixture
