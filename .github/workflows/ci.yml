@@ -1,42 +1,65 @@
-name: Build and Test
+name: CI Pipeline
 
 on:
   push:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-test:
+  # Job de Build
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-    # Passo 1: Fazer checkout do código
-    - name: Check out code
-      uses: actions/checkout@v3
+      # 1. Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Passo 2: Configurar o Python
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
+      # 2. Configurar o Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
 
-    # Passo 3: Instalar dependências
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      # 3. Instalar dependências
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    # Passo 4: Etapa de build
-    - name: Build application
-      run: |
-        # Aqui você pode rodar comandos específicos para o build
-        # Por exemplo, empacotar sua aplicação com setuptools, poetry ou pyinstaller
-        echo "Building application..."
-        python setup.py sdist bdist_wheel || echo "Skip if not using setuptools"
+      # 4. Verificar se o app Flask compila corretamente
+      - name: Verify Flask App
+        run: |
+          python -m flask --version
 
-    # Passo 5: Executar testes
-    - name: Run tests
-      run: |
-        echo "Running tests..."
-        pytest tests/
+  # Job de Test (depende do Build)
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Configurar o Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      # 3. Instalar dependências (garantindo o mesmo ambiente)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Executar os testes
+      - name: Run tests
+        run: |
+          pytest tests/

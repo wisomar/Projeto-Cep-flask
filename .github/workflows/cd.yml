@@ -58,8 +58,9 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      # 4. Fazer deploy para o Vercel
+       # 4. Fazer deploy para o Vercel
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.PROJETO_CEP_FLASK }}
-        run: vercel --prod --token $VERCEL_TOKEN --yes
+        run: vercel --prod --token $VERCEL_TOKEN --project projeto-cep-flask --yes
+
