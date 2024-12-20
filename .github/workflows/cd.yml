@@ -60,7 +60,6 @@ jobs:
 
        # 4. Fazer deploy para o Vercel
       - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.PROJETO_CEP_FLASK }}
-        run: vercel --prod --token $VERCEL_TOKEN --project projeto-cep-flask --yes
+        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+
 
