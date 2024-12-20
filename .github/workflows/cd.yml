@@ -29,11 +29,13 @@ jobs:
       # 3. Build da imagem Docker
       - name: Build Docker image
         run: |
+          docker build -t wisomar/projeto-cep-flask:latest .
           docker build -t wisomar/projeto-cep-flask:${{ github.sha }} .
 
       # 4. Push da imagem Docker
       - name: Push Docker image
         run: |
+          docker push wisomar/projeto-cep-flask:latest
           docker push wisomar/projeto-cep-flask:${{ github.sha }}
 
   # Job de Deploy no Vercel
@@ -46,10 +48,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Instalar Vercel CLI
+      # 2. Instalar Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3. Instalar Vercel CLI
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      # 3. Fazer deploy para o Vercel
+      # 4. Fazer deploy para o Vercel
       - name: Deploy to Vercel
-        run: vercel --prod --token ${{ secrets.PROJETO_CEP_FLASK }} --yes
+        env:
+          VERCEL_TOKEN: ${{ secrets.PROJETO_CEP_FLASK }}
+        run: vercel --prod --token $VERCEL_TOKEN --yes
