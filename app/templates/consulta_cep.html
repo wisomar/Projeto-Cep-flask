@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de CEP</title>
+</head>
+<body>
+    <h1>Consulta de CEP</h1>  <!-- Cabeçalho H1 -->
+
+    <!-- Exibindo mensagens de erro ou sucesso -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="flash-{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <input type="text" name="cep" placeholder="Digite o CEP" required>
+        <button type="submit">Consultar</button>
+    </form>
+
+    {% if endereco %}
+        <h3>Resultado da Consulta:</h3>
+        <p><strong>Logradouro:</strong> {{ endereco['logradouro'] }}</p>
+        <p><strong>Bairro:</strong> {{ endereco['bairro'] }}</p>
+        <p><strong>Cidade:</strong> {{ endereco['localidade'] }}</p>
+        <p><strong>Estado:</strong> {{ endereco['uf'] }}</p>
+    {% endif %}
+</body>
+</html>
