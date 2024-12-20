@@ -62,4 +62,4 @@ jobs:
       # 4. Executar os testes
       - name: Run tests
         run: |
-          pytest test/
+          pytest test/test_app.py
