@@ -59,12 +59,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Adicionar o diretório 'src' ao PYTHONPATH (para resolver os imports)
+      # 4. Adicionar o diretório 'test' ao PYTHONPATH (para resolver os imports)
       - name: Add test to PYTHONPATH
         run: echo "PYTHONPATH=${PYTHONPATH}:$(pwd)/test" >> $GITHUB_ENV
 
+      # 5. Rodar os testes
       - name: Run tests
         run: |
           pytest test/test_app.py
-        working-directory: ./Projeto-Cep-flask
-
